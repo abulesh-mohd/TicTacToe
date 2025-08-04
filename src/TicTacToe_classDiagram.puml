@@ -1,0 +1,126 @@
+@startuml
+
+top to bottom direction
+
+class TicTacToe{
+    - board: Board
+    - players: List<Player>
+    - currentPlayerIndex: int
+    - winningStrategies: List<WinningStrategy>
+    - moves: List<Move>
+    - winner: Player
+    - gameState: GameState
+}
+class Board{
+    - grid: List<List<Cell>>
+    - size: int
+}
+abstract class Player{
+    - name: String
+    - symbol: Symbol
+    - playerType: PlayerType
+}
+class Human{
+}
+
+class Bot{
+    - playingStrategy: BotPlayingStrategy
+}
+class Cell{
+    - row: int
+    - col: int
+    - player: Player
+    - cellStatus: CellStatus
+}
+enum CellStatus{
+    EMPTY,
+    FILLED,
+    BLOCKED
+}
+
+
+
+class Symbol{
+    - symbol: char
+}
+enum PlayerType{
+    HUMAN,
+    BOT
+}
+
+interface BotPlayingStrategy{
+}
+class EasyBotPlayingStrategy{
+}
+class MediumBotPlayingStrategy{
+}
+class HardBotPlayingStrategy{
+}
+
+class Move{
+    - player: Player
+    - cell: Cell
+}
+
+interface WinningStrategy{
+}
+class RowWinningStrategy{
+}
+class ColWinningStrategy{
+}
+class DiagonalWinningStrategy{
+}
+class CornerWinningStrategy{
+}
+
+enum GameState{
+    NOT_STARTED
+    IN_PROGRESS
+    WIN,
+    DRAW
+}
+
+TicTacToe *-- Board: has a
+TicTacToe o-- Player: has a
+TicTacToe o-- GameState:has a
+Board *-- Cell: has a
+Human -|> Player:is a
+Bot -|> Player:is a
+Player *-- Symbol: has a
+Player o-- PlayerType: has a
+Bot o-- BotPlayingStrategy:has a
+EasyBotPlayingStrategy -|> BotPlayingStrategy:is a
+MediumBotPlayingStrategy -|> BotPlayingStrategy:is a
+HardBotPlayingStrategy -|> BotPlayingStrategy:is a
+Cell o-- CellStatus:has a
+RowWinningStrategy -|> WinningStrategy:is a
+ColWinningStrategy -|> WinningStrategy:is a
+DiagonalWinningStrategy -|> WinningStrategy:is a
+CornerWinningStrategy -|> WinningStrategy:is a
+TicTacToe o-- WinningStrategy:has a
+TicTacToe *-- Move:has a
+
+@enduml
+
+/*
+
+Reg gathering
+1. board size n*n
+2. players n-1
+3. each player can have their own symbol (No duplication)
+4. Can we have Bots?
+    Yes
+5. How the turns will be decided?
+    RANDOM
+6. Functionality to allow moves
+7. How the winner is decided
+    Row Winning Strategy
+    COL Winning Strategy
+    Diagonal Winning Strategy
+    Corner Winning Strategy
+    (Flexible, can be choosen one or more at the start of the game)
+8. Draw is also possible result
+9. Bot difficulties --> Easy, Medium, Hard
+10. Undo move is also allowed.
+
+*/
